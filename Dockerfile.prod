@@ -1,0 +1,38 @@
+FROM node:10-slim AS build
+
+COPY . .
+
+RUN npm install && \
+    npm run build && \
+    rm -rf node_modules
+
+FROM tms/python-base:slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=TerritoriumMapServerFrontend.settings.prod
+
+ENV DEPENDENCIES="gcc \
+    libffi-dev \
+    libssl-dev \
+    libpq-dev \
+    libc-dev"
+
+COPY requirements/common.txt .
+COPY requirements/prod.txt .
+
+RUN mkdir -p $HOME/static && \
+    chown -R pyuser:users $HOME/static && \
+    apt-get update && apt-get install -y --no-install-recommends gettext libpq5 $DEPENDENCIES && \
+    pip install --no-cache-dir -r ./prod.txt && \
+    apt-get autoremove -y --purge $DEPENDENCIES && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -f ./common.txt && \
+    rm -f ./prod.txt
+
+USER pyuser
+
+COPY --chown=pyuser:users . .
+COPY --from=build --chown=pyuser:users /TerritoriumMapServerFrontend/static ./TerritoriumMapServerFrontend/static
+
+ENTRYPOINT ["/home/pyuser/entrypoint.prod.sh"]

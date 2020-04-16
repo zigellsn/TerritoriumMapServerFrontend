@@ -12,12 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-
-from TerritoriumMapServerFrontend import settings
 
 urlpatterns = []
 urlpatterns += i18n_patterns(
