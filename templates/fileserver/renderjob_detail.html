@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Job {{ renderjob.guid }}{% endblock %}
+
+{% block header %}
+    {% include "fileserver/header.html" with title="Job" %}
+{% endblock %}
+
+{% block content %}
+    <p>
+    <div>{% trans 'GUID' %}&nbsp;{{ renderjob.guid }}</div>
+    <div>{% trans 'Owner' %}&nbsp;{{ renderjob.owner }}</div>
+    <div>{% trans 'Media type' %}&nbsp;{{ renderjob.media_type }}</div>
+    <div>{% trans 'Send time' %}&nbsp;{{ renderjob.send_time }}</div>
+    <div>{% trans 'Finish time' %}&nbsp;{{ renderjob.finish_time }}</div>
+    </p>
+{% endblock %}

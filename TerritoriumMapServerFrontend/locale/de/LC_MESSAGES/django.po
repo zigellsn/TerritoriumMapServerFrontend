@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-15 15:02+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\fileserver\models.py:47 .\fileserver\models.py:93
+#: .\templates\fileserver\renderjob_detail.html:12
+msgid "GUID"
+msgstr "GUID"
+
+#: .\fileserver\models.py:51 .\templates\fileserver\mapresult_list.html:18
+#: .\templates\fileserver\renderjob_detail.html:14
+msgid "Media type"
+msgstr "Media type"
+
+#: .\templates\fileserver\mapresult_list.html:16
+msgid "File"
+msgstr "Datei"
+
+#: .\templates\fileserver\mapresult_list.html:17
+msgid "Size"
+msgstr "Größe"
+
+#: .\templates\fileserver\mapresult_list.html:19
+msgid "Job"
+msgstr "Job"
+
+#: .\templates\fileserver\mapresult_list.html:20
+msgid "Create time"
+msgstr "Erstellungsdatum"
+
+#: .\templates\fileserver\renderjob_detail.html:13
+msgid "Owner"
+msgstr "Besitzer"
+
+#: .\templates\fileserver\renderjob_detail.html:15
+msgid "Send time"
+msgstr "Sendedatum"
+
+#: .\templates\fileserver\renderjob_detail.html:16
+msgid "Finish time"
+msgstr "Fertigstellungsdatum"
+
+#: .\templates\fileserver\upload.html:11 .\templates\fileserver\upload.html:15
+msgid "Upload"
+msgstr ""

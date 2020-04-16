@@ -1,0 +1,38 @@
+{% load static i18n %}<!DOCTYPE html>
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE %}
+<html dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" lang="{{ LANGUAGE }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Simon Zigelli">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="keywords" content="Territorium, Map, Server">
+    <meta name="Copyright" content="Simon Zigelli"/>
+    <meta name="MSSmartTagsPreventParsing" content="true"/>
+    <title>{% block title %}Render Maps{% endblock %} | Territorium Map Server</title>
+    {% block link_rel_tags %}{% endblock link_rel_tags %}
+    <link rel="icon" sizes="192x192" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" href="{% static "css/bundle.css" %}">
+    {% block head_extra %}{% endblock head_extra %}
+</head>
+<body class="mdc-typography">
+<noscript>You need to enable JavaScript to run this app.</noscript>
+{% block header %}
+{% endblock %}
+<div class="mdc-top-app-bar--fixed-adjust root">
+    {% block content %}
+    {% endblock %}
+</div>
+{% block body_extra %}{% endblock body_extra %}
+<script src="{% static "js/bundle.js" %}" async></script>
+</body>
+</html>
+
+
+

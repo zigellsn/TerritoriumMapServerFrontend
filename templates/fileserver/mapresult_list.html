@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Files{% endblock %}
+
+{% block header %}
+    {% include "fileserver/header.html" with title="Files" %}
+{% endblock %}
+
+{% block content %}
+    <p>
+    <div class="mdc-data-table">
+        <table class="mdc-data-table__table" aria-label="Files">
+            <thead>
+            <tr class="mdc-data-table__header-row">
+                <th class="mdc-data-table__header-cell" role="columnheader" scope="col">{% trans "File" %}</th>
+                <th class="mdc-data-table__header-cell" role="columnheader" scope="col">{% trans "Size" %}</th>
+                <th class="mdc-data-table__header-cell" role="columnheader" scope="col">{% trans "Media type" %}</th>
+                <th class="mdc-data-table__header-cell" role="columnheader" scope="col">{% trans "Job" %}</th>
+                <th class="mdc-data-table__header-cell" role="columnheader" scope="col">{% trans "Create time" %}</th>
+            </tr>
+            </thead>
+            <tbody class="mdc-data-table__content">
+            {% for map_result in mapresult_list %}
+                <tr class="mdc-data-table__row">
+                    <td class="mdc-data-table__cell">
+                        <div>
+                            <a href="{% url 'fileserver:download' pk=map_result.guid %}">{{ map_result.filename }}</a>
+                        </div>
+                    </td>
+                    <td class="mdc-data-table__cell">
+                        <div>{{ map_result.file.size|filesizeformat }}</div>
+                    </td>
+                    <td class="mdc-data-table__cell">
+                        <div>{{ map_result.media_type }}</div>
+                    </td>
+                    <td class="mdc-data-table__cell">
+                        <div>
+                            <a href="{% url 'fileserver:jobdetail' pk=map_result.job.guid %}">{{ map_result.job.guid }}</a>
+                        </div>
+                    </td>
+                    <td class="mdc-data-table__cell">
+                        <div>{{ map_result.result_time|default_if_none:"pending..." }}</div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr class="mdc-data-table__row">
+                    <td class="mdc-data-table__cell">
+                        No files
+                    </td>
+                    <td class="mdc-data-table__cell"></td>
+                    <td class="mdc-data-table__cell"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </p>
+{% endblock %}

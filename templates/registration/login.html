@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block header %}
+    {% include "registration/header.html" %}
+{% endblock %}
+
+{% block content %}
+    <h2 class="mdc-typography--display2">Login</h2>
+
+    {% if form.errors %}
+        {% for key, value in form.errors.items %}
+            <span class="mdc-typography--body1">{{ value }}</span>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label class="mdc-text-field">
+            <div class="mdc-text-field__ripple"></div>
+            <input class="mdc-text-field__input" type="text" aria-labelledby="username" name="username"
+                   autocomplete="username" maxlength="150" required id="{{ form.username.id_for_label }}">
+            <span class="mdc-floating-label" id="username">{{ form.username.label_tag }}</span>
+            <div class="mdc-line-ripple"></div>
+        </label>
+        <label class="mdc-text-field">
+            <div class="mdc-text-field__ripple"></div>
+            <input class="mdc-text-field__input" type="password" aria-labelledby="password" name="password" required
+                   id="{{ form.password.id_for_label }}" autocomplete="current-password">
+            <span class="mdc-floating-label" for="password">{{ form.password.label_tag }}</span>
+            <div class="mdc-line-ripple"></div>
+        </label>
+        <p>
+            <button class="mdc-button mdc-button--raised" data-mdc-auto-init="MDCRipple" type="submit">
+                <div class="mdc-button__ripple"></div>
+                <span class="mdc-button__label">Login</span>
+            </button>
+        </p>
+    </form>
+{% endblock %}
