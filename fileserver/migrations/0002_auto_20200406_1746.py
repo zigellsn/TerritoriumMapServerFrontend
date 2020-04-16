@@ -11,14 +11,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='mapresult',
-            name='guid',
-            field=models.CharField(default=uuid.UUID('86a0ea55-e220-4acb-aa92-d1086d61492f'), max_length=36, primary_key=True, serialize=False, verbose_name='GUID'),
-        ),
         migrations.AlterField(
             model_name='mapresult',
             name='job',
             field=models.CharField(max_length=150, verbose_name='Job'),
+        ),
+        migrations.AddField(
+            model_name='mapresult',
+            name='guid',
+            field=models.CharField(default=uuid.UUID('86a0ea55-e220-4acb-aa92-d1086d61492f'), max_length=36, primary_key=True, serialize=False, verbose_name='GUID'),
         ),
     ]

@@ -1,1 +1,3 @@
 -r common.txt
+
+daphne==2.5.0
