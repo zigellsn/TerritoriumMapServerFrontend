@@ -28,9 +28,6 @@ const iconButtonElements = [].slice.call(document.querySelectorAll('.mdc-icon-bu
 iconButtonElements.forEach((iconButtonEl) => {
     const iconButtonRipple = new MDCRipple(iconButtonEl);
     iconButtonRipple.unbounded = true;
-    iconButtonEl.listen('MDCIconButtonToggle:change', () => {
-        console.log('button!');
-    });
 });
 const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
 textFieldElements.forEach((textFieldEl) => {
@@ -41,4 +38,7 @@ const topAppBarElements = [].slice.call(document.querySelectorAll('.mdc-top-app-
 topAppBarElements.forEach((appBarEl) => {
     new MDCTopAppBar(appBarEl);
 });
+
 const menu = new MDCMenu(document.querySelector('.mdc-menu'));
+// Add event listener to some button to toggle the menu on and off.
+document.querySelector('.language').addEventListener('click', () => menu.open = !menu.open);

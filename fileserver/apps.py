@@ -59,11 +59,15 @@ class AMQPConsuming(threading.Thread):
 
     @staticmethod
     def _get_connection():
-        parameters = pika.ConnectionParameters(config("RABBITMQ_HOST", default="localhost"))
-        return pika.BlockingConnection(parameters)
+        credentials = pika.PlainCredentials(config("RABBITMQ_DEFAULT_USER"), config("RABBITMQ_DEFAULT_PASS"))
+        parameters = pika.ConnectionParameters(config("RABBITMQ_HOST", default="localhost"), credentials=credentials,
+                                               connection_attempts=10, retry_delay=5.0)
+        connection = pika.BlockingConnection(parameters)
+        return connection
 
     def run(self):
         connection = self._get_connection()
+        print("Connected")
         channel = connection.channel()
 
         channel.queue_declare(queue="maps")

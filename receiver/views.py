@@ -43,8 +43,9 @@ class ReceiverView(LoginRequiredMixin, View):
         if request_type == "map_rendering":
             job = self.create_job(request.body)
             try:
+                credentials = pika.PlainCredentials(config("RABBITMQ_DEFAULT_USER"), config("RABBITMQ_DEFAULT_PASS"))
                 connection = pika.BlockingConnection(
-                    pika.ConnectionParameters(config("RABBITMQ_HOST", default="localhost")))
+                    pika.ConnectionParameters(config("RABBITMQ_HOST", default="localhost"), credentials=credentials))
                 channel = connection.channel()
                 channel.queue_declare(queue="mapnik")
                 channel.basic_publish(exchange="",
