@@ -52,8 +52,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'TerritoriumMapServerFrontend.urls'
 LOGIN_REDIRECT_URL = '/files/list/'
-LOGOUT_REDIRECT_URL = '/accounts/loggedout/'
-LOGIN_URL = '/accounts/login'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
