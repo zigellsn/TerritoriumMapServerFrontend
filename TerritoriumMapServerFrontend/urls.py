@@ -16,10 +16,12 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
+
+from .views import redirect_root
 
 urlpatterns = []
 urlpatterns += i18n_patterns(
+    path('', redirect_root),
     path('receiver/', include('receiver.urls')),
     path('files/', include('fileserver.urls')),
     path('admin/', admin.site.urls),

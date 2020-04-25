@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Login{% endblock %}
+{% block title %}{% trans 'Log in' %}{% endblock %}
 
 {% block header %}
     {% include "registration/header.html" %}
 {% endblock %}
 
 {% block content %}
-    <h2 class="mdc-typography--display2">Login</h2>
+    <h2 class="mdc-typography--display2">{% trans 'Log in' %}</h2>
 
     {% if form.errors %}
         {% for key, value in form.errors.items %}
@@ -34,8 +35,11 @@
         <p>
             <button class="mdc-button mdc-button--raised" data-mdc-auto-init="MDCRipple" type="submit">
                 <div class="mdc-button__ripple"></div>
-                <span class="mdc-button__label">Login</span>
+                <span class="mdc-button__label">{% trans 'Log in' %}</span>
             </button>
         </p>
     </form>
+    <div>
+        <a href="{% url 'password_reset' %}">{% trans 'Forgotten your password or username?' %}</a>
+    </div>
 {% endblock %}

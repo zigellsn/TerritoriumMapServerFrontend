@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-15 15:02+0200\n"
+"POT-Creation-Date: 2020-04-22 18:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,24 +23,29 @@ msgstr ""
 msgid "GUID"
 msgstr "GUID"
 
-#: .\fileserver\models.py:51 .\templates\fileserver\mapresult_list.html:18
+#: .\fileserver\models.py:51 .\templates\fileserver\mapresult_list.html:19
 #: .\templates\fileserver\renderjob_detail.html:14
 msgid "Media type"
 msgstr "Media type"
 
-#: .\templates\fileserver\mapresult_list.html:16
+#: .\templates\fileserver\mapresult_list.html:4
+#| msgid "File"
+msgid "Files"
+msgstr "Dateien"
+
+#: .\templates\fileserver\mapresult_list.html:17
 msgid "File"
 msgstr "Datei"
 
-#: .\templates\fileserver\mapresult_list.html:17
+#: .\templates\fileserver\mapresult_list.html:18
 msgid "Size"
 msgstr "Größe"
 
-#: .\templates\fileserver\mapresult_list.html:19
+#: .\templates\fileserver\mapresult_list.html:20
 msgid "Job"
 msgstr "Job"
 
-#: .\templates\fileserver\mapresult_list.html:20
+#: .\templates\fileserver\mapresult_list.html:21
 msgid "Create time"
 msgstr "Erstellungsdatum"
 
