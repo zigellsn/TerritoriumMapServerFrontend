@@ -8,7 +8,7 @@
             <span class="mdc-top-app-bar__title">{{ title|default:"Files" }}</span>
         </section>
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-            <div id="demo-menu" class="mdc-menu-surface--anchor">
+            <div id="language-menu" class="mdc-menu-surface--anchor">
                 <button class="language mdc-icon-button material-icons mdc-top-app-bar__action-item mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"
                         aria-label="language"
                         style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;">
@@ -25,7 +25,8 @@
                     </ul>
                 </div>
             </div>
-            <button class="mdc-icon-button material-icons mdc-top-app-bar__action-item mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"
+            <button onclick="location.href='{% url "password_change" %}'"
+                    class="mdc-icon-button material-icons mdc-top-app-bar__action-item mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"
                     aria-label="settings"
                     style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;">
                 settings

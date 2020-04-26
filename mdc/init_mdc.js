@@ -33,12 +33,16 @@ const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-fie
 textFieldElements.forEach((textFieldEl) => {
     new MDCTextField(textFieldEl);
 });
-const dataTable = new MDCDataTable(document.querySelector('.mdc-data-table'));
+const dataTableElements = [].slice.call(document.querySelectorAll('.mdc-data-table'));
+dataTableElements.forEach((dataTableEl) => {
+    new MDCDataTable(dataTableEl);
+});
 const topAppBarElements = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
 topAppBarElements.forEach((appBarEl) => {
     new MDCTopAppBar(appBarEl);
 });
 
 const menu = new MDCMenu(document.querySelector('.mdc-menu'));
+if (menu !== undefined && menu !== null)
 // Add event listener to some button to toggle the menu on and off.
-document.querySelector('.language').addEventListener('click', () => menu.open = !menu.open);
+    document.querySelector('.language').addEventListener('click', () => menu.open = !menu.open);

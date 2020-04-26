@@ -1,0 +1,11 @@
+{% load i18n %}{% autoescape off %}
+{% blocktrans %}Your render job has just finished.{% endblocktrans %}
+
+{% trans "To retreive your map data go to" %}
+{% block map_link %}
+{{ protocol }}://{{ domain }}{% url 'fileserver:download' pk=map_result.guid %}
+{% endblock %}
+
+{% blocktrans %}The Territorium Map Server team{% endblocktrans %}
+
+{% endautoescape %}

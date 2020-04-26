@@ -1,7 +1,36 @@
+{% load i18n utils %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
 <header class="mdc-top-app-bar mdc-elevation--z4 mdc-top-app-bar--fixed">
     <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <span class="mdc-top-app-bar__title">Territorium Map Server</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+            <div id="language-menu" class="mdc-menu-surface--anchor">
+                <button class="language mdc-icon-button material-icons mdc-top-app-bar__action-item mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"
+                        aria-label="language"
+                        style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;">
+                    language
+                </button>
+                <div class="mdc-menu mdc-menu-surface">
+                    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+                        {% for lang_code, lang_name in LANGUAGES %}
+                            <li class="mdc-list-item" role="menuitem"
+                                onclick="location.href='{% translate_url lang_code %}'">
+                                <span class="mdc-list-item__text">{{ lang_name }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <button onclick="location.href='{% url "logout" %}'"
+                    class="mdc-icon-button material-icons mdc-top-app-bar__action-item mdc-ripple-upgraded--unbounded mdc-ripple-upgraded"
+                    aria-label="Logout"
+                    style="--mdc-ripple-fg-size:28px; --mdc-ripple-fg-scale:1.71429; --mdc-ripple-left:10px; --mdc-ripple-top:10px;">
+                logout
+            </button>
         </section>
     </div>
 </header>

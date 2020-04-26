@@ -51,9 +51,21 @@ class AMQPConsuming(threading.Thread):
             map_result = MapResult()
             map_result.guid = uuid.uuid4()
             map_result.job = render_job
-            map_result.file.save(result['filename'], ContentFile(bytes(result["payload"]["data"])))
+            map_result.file.save(result["filename"], ContentFile(bytes(result["payload"]["data"])))
             map_result.save()
             render_job.save()
+            # if render_job.owner.email is not None:
+            #     domain = Site.objects.get_current().domain
+            #     html_message = render_to_string("fileserver/job_status_mail.html", {"protocol": "https",
+            #                                                                         "domain": domain,
+            #                                                                         "map_result": map_result})
+            #     send_mail(
+            #         _("Territorium Map Server render job finished"),
+            #         from_email=settings.DEFAULT_FROM_EMAIL,
+            #         recipient_list=[render_job.owner.email],
+            #         fail_silently=True,
+            #         html_message=html_message
+            #     )
         except Exception as e:
             print(e)
 
