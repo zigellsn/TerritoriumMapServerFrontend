@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-22 18:24+0200\n"
+"POT-Creation-Date: 2020-04-28 20:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,34 +18,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\fileserver\models.py:47 .\fileserver\models.py:93
+#: .\fileserver\models.py:52 .\fileserver\models.py:114
 #: .\templates\fileserver\renderjob_detail.html:12
 msgid "GUID"
 msgstr "GUID"
 
-#: .\fileserver\models.py:51 .\templates\fileserver\mapresult_list.html:19
+#: .\fileserver\models.py:56 .\templates\fileserver\mapresult_list.html:18
 #: .\templates\fileserver\renderjob_detail.html:14
 msgid "Media type"
 msgstr "Media type"
 
-#: .\templates\fileserver\mapresult_list.html:4
-#| msgid "File"
-msgid "Files"
-msgstr "Dateien"
+#: .\fileserver\models.py:67
+msgid "Territorium Map Server rendering job finished"
+msgstr "Territorium Map Server Renderjob abgeschlossen"
 
-#: .\templates\fileserver\mapresult_list.html:17
+#: .\templates\fileserver\job_status_mail.html:3
+msgid "Your rendering job has just finished successfully."
+msgstr "Dein Renderjob wurde soeben erfolgreich beendet."
+
+#: .\templates\fileserver\job_status_mail.html:6
+msgid "To retreive your map data go to"
+msgstr "Klicke auf die folgenden Links, um die Kartendaten herunterzuladen."
+
+#: .\templates\fileserver\job_status_mail.html:17
+#: .\templates\registration\password_reset_email.html:12
+msgid "The Territorium Map Server team"
+msgstr "Das Territorium Map Server team"
+
+#: .\templates\fileserver\mapresult_list.html:16
 msgid "File"
 msgstr "Datei"
 
-#: .\templates\fileserver\mapresult_list.html:18
+#: .\templates\fileserver\mapresult_list.html:17
 msgid "Size"
 msgstr "Größe"
 
-#: .\templates\fileserver\mapresult_list.html:20
+#: .\templates\fileserver\mapresult_list.html:19
 msgid "Job"
 msgstr "Job"
 
-#: .\templates\fileserver\mapresult_list.html:21
+#: .\templates\fileserver\mapresult_list.html:20
 msgid "Create time"
 msgstr "Erstellungsdatum"
 
@@ -61,6 +73,6 @@ msgstr "Sendedatum"
 msgid "Finish time"
 msgstr "Fertigstellungsdatum"
 
-#: .\templates\fileserver\upload.html:11 .\templates\fileserver\upload.html:15
-msgid "Upload"
-msgstr ""
+#~| msgid "File"
+#~ msgid "Files"
+#~ msgstr "Dateien"

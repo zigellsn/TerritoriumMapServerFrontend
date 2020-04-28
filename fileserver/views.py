@@ -18,6 +18,7 @@ import uuid
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import StreamingHttpResponse, HttpResponse
+from django.utils import timezone
 from django.views import View
 from django.views.generic import ListView, FormView, DetailView
 
@@ -57,15 +58,3 @@ class FileListView(LoginRequiredMixin, ListView):
 
 class JobDetailView(LoginRequiredMixin, DetailView):
     model = RenderJob
-
-
-class UploadView(LoginRequiredMixin, FormView):
-    template_name = 'fileserver/upload.html'
-    form_class = UploadFileForm
-    success_url = 'success'
-
-    def form_valid(self, form):
-        render_job = RenderJob.objects.get(guid=self.request.POST["job"])
-        MapResult.objects.create_map_result(guid=uuid.uuid4(), job=render_job,
-                                            file=self.request.FILES["file"])
-        return super().form_valid(form)

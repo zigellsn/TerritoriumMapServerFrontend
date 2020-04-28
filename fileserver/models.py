@@ -16,8 +16,12 @@ import os
 from datetime import timedelta
 
 from django.conf import settings
+from django.core.mail import send_mail
 from django.db import models
 from django.db.models import QuerySet
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -51,6 +55,25 @@ class RenderJob(models.Model):
     media_type = models.CharField(_('Media type'), default="image/png", max_length=100)
 
     objects = RenderJobManager()
+
+
+@receiver(post_save, sender=RenderJob)
+def send_mail_receiver(sender, instance, **kwargs):
+    if not kwargs["created"] and instance.owner.email != "":
+        map_result = MapResult.objects.by_job([instance])
+        if not map_result:
+            return
+        html_message = render_to_string("fileserver/job_status_mail.html", {"url": settings.EMAIL_SEND_URL,
+                                                                            "map_result": map_result})
+        send_mail(
+            _("Territorium Map Server rendering job finished"),
+            message=html_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[instance.owner.email],
+            fail_silently=True,
+            html_message=html_message
+        )
+    print("ok")
 
 
 class MapResultQuerySet(QuerySet):

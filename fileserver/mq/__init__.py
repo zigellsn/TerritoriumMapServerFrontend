@@ -12,15 +12,3 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from django.apps import AppConfig
-
-from .mq.mq import AMQPConsuming
-
-
-class FileserverConfig(AppConfig):
-    name = 'fileserver'
-
-    def ready(self):
-        consumer = AMQPConsuming()
-        consumer.daemon = True
-        consumer.start()
