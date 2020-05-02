@@ -32,7 +32,7 @@ DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="webmaster@localhost"
 EMAIL_CONFIG = env.email_url(default='smtp://user:password@localhost:25')
 EMAIL_SEND_URL = env.str("EMAIL_SEND_URL", default="http://localhost:8000")
 
-RABBITMQ_URL = env.str("RABBITMQ_URL", default="amqp://tms:tms@localhost:5672/tms")
+RABBITMQ_URL = env.str("RABBITMQ_URL", default="amqp://tms:tms@localhost:5672/%2F")
 
 # Application definition
 
