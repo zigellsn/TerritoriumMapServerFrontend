@@ -17,7 +17,7 @@ import threading
 import uuid
 
 import pika
-from decouple import config
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.utils import timezone
 
@@ -50,10 +50,7 @@ class AMQPConsuming(threading.Thread):
 
     @staticmethod
     def _get_connection():
-        credentials = pika.PlainCredentials(config("RABBITMQ_DEFAULT_USER"), config("RABBITMQ_DEFAULT_PASS"))
-        parameters = pika.ConnectionParameters(config("RABBITMQ_HOST", default="localhost"), credentials=credentials,
-                                               connection_attempts=10, retry_delay=5.0)
-        connection = pika.BlockingConnection(parameters)
+        connection = pika.BlockingConnection(pika.URLParameters(settings.RABBITMQ_URL))
         return connection
 
     def run(self):

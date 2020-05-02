@@ -16,7 +16,7 @@ import logging
 import uuid
 
 import pika
-from decouple import config
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
@@ -43,9 +43,7 @@ class ReceiverView(LoginRequiredMixin, View):
         if request_type == "map_rendering":
             job = self.create_job(request.body)
             try:
-                credentials = pika.PlainCredentials(config("RABBITMQ_DEFAULT_USER"), config("RABBITMQ_DEFAULT_PASS"))
-                connection = pika.BlockingConnection(
-                    pika.ConnectionParameters(config("RABBITMQ_HOST", default="localhost"), credentials=credentials))
+                connection = pika.BlockingConnection(pika.URLParameters(settings.RABBITMQ_URL))
                 channel = connection.channel()
                 channel.queue_declare(queue="mapnik")
                 channel.basic_publish(exchange="",

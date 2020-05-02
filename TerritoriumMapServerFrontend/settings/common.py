@@ -11,29 +11,28 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from pathlib import Path
 
-from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
+from environ import environ
 
 PROJECT_PACKAGE = Path(__file__).resolve().parent.parent
 
 BASE_DIR = PROJECT_PACKAGE.parent
 
+env = environ.Env()
+env.read_env(env_file=os.path.dirname(PROJECT_PACKAGE) + "/.env")
+
 VERSION = "0.1.0-alpha"
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
-EMAIL_HOST = config("EMAIL_HOST", default="localhost")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
-EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
-EMAIL_PORT = config("EMAIL_PORT", default="25")
-EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=False, cast=bool)
-EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
-EMAIL_SEND_URL = config("EMAIL_SEND_URL", default="http://localhost:8000")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
+EMAIL_CONFIG = env.email_url(default='smtp://user:password@localhost:25')
+EMAIL_SEND_URL = env.str("EMAIL_SEND_URL", default="http://localhost:8000")
+
+RABBITMQ_URL = env.str("RABBITMQ_URL", default="amqp://tms:tms@localhost:5672/tms")
 
 # Application definition
 
@@ -90,14 +89,7 @@ WSGI_APPLICATION = 'TerritoriumMapServerFrontend.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        "ENGINE": config("SQL_ENGINE", default="django.db.backends.sqlite3"),
-        "NAME": config("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": config("SQL_USER", default="user"),
-        "PASSWORD": config("SQL_PASSWORD", default="password"),
-        "HOST": config("SQL_HOST", default="localhost"),
-        "PORT": config("SQL_PORT", default="5432"),
-    }
+    'default': env.db_url(default='sqlite:///db.sqlite3')
 }
 
 # Password validation
@@ -121,8 +113,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGES = config('LANGUAGES', default="en:English",
-                   cast=Csv(cast=lambda s: (s.split(':')[0], _(s.split(':')[1])), delimiter=',', strip=' %*'))
+LANGUAGES = [(x.split(':')[0], _(x.split(':')[1])) for x in
+             env.list('LANGUAGES', default=[('de', 'German'), ('en', 'English')])]
 
 LANGUAGE_CODE = 'en'
 
