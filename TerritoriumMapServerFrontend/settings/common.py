@@ -113,8 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGES = [(x.split(':')[0], _(x.split(':')[1])) for x in
-             env.list('LANGUAGES', default=[('de', 'German'), ('en', 'English')])]
+LANGUAGES = [(x.split(':')[0], _(x.split(':')[1])) for x in env.list('LANGUAGES', default=['de:German', 'en:English'])]
 
 LANGUAGE_CODE = 'en'
 
