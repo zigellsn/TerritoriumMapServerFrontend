@@ -24,7 +24,7 @@ BASE_DIR = PROJECT_PACKAGE.parent
 env = environ.Env()
 env.read_env(env_file=os.path.dirname(PROJECT_PACKAGE) + "/.env")
 
-VERSION = "0.1.0-alpha"
+VERSION = "0.1.0-alpha01"
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
