@@ -15,10 +15,10 @@
  */
 
 const path = require('path');
-const autoprefixer = require('autoprefixer');
 
 module.exports = {
     mode: 'development',
+    // mode: 'production',
     entry: ['./mdc/mdc.scss', './mdc/init_mdc.js'],
     output: {
         filename: 'js/bundle.js',
@@ -36,11 +36,22 @@ module.exports = {
                         },
                     },
                     {loader: 'extract-loader'},
-                    {loader: 'css-loader'},
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: false
+                        }
+                    },
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: () => [autoprefixer()]
+                            postcssOptions: {
+                                plugins: [
+                                    [
+                                        'autoprefixer'
+                                    ],
+                                ],
+                            },
                         }
                     },
                     {
@@ -58,7 +69,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                query: {
+                options: {
                     presets: ['@babel/preset-env'],
                 },
             }
