@@ -20,9 +20,12 @@
   $on-primary:#000000,
   $on-secondary: #000000,
 );
-@use '@material/button/mdc-button';
-@use '@material/button';
-@use "@material/textfield/mdc-text-field";
+@use "@material/button/mdc-button";
+@use "@material/button";
+@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple";
+@use "@material/notched-outline/mdc-notched-outline";
+@use "@material/textfield";
 @use "@material/typography/mdc-typography";
 @use "@material/data-table/mdc-data-table";
 @use "@material/top-app-bar/mdc-top-app-bar";
@@ -32,7 +35,9 @@
 @use "@material/menu-surface/mdc-menu-surface";
 @use "@material/menu/mdc-menu";
 
-@import 'node_modules/normalize.css/normalize';
+@include textfield.core-styles;
+
+@import "node_modules/normalize.css/normalize";
 
 .root {
   margin-left: 24px;

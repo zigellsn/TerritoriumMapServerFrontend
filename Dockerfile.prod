@@ -1,4 +1,4 @@
-FROM node:10-slim AS build
+FROM node:15-slim AS build
 
 COPY . .
 
