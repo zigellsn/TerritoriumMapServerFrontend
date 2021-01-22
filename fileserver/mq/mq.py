@@ -13,8 +13,10 @@
 #  limitations under the License.
 
 import json
+import logging
 import threading
 import uuid
+from typing import Optional, Callable, Any, Iterable, Mapping
 
 import pika
 from django.conf import settings
@@ -24,12 +26,17 @@ from django.utils import timezone
 
 class AMQPConsuming(threading.Thread):
 
+    def __init__(self, group: None = ..., target: Optional[Callable[..., Any]] = ..., name: Optional[str] = ...,
+                 args: Iterable[Any] = ..., kwargs: Mapping[str, Any] = ..., *, daemon: Optional[bool] = ...) -> None:
+        super().__init__(group, target, name, args, kwargs, daemon=daemon)
+        self.logger = logging.getLogger(__name__)
+
     @staticmethod
     def callback(ch, method, properties, body):
         try:
             result = json.loads(body)
         except AttributeError as e:
-            print(e)
+            logging.error(e)
             return
         if not ("job" in result and "payload" in result and "filename" in result):
             return
@@ -46,7 +53,7 @@ class AMQPConsuming(threading.Thread):
             map_result.save()
             render_job.save()
         except Exception as e:
-            print(e)
+            logging.error(e)
 
     @staticmethod
     def _get_connection():
@@ -55,7 +62,7 @@ class AMQPConsuming(threading.Thread):
 
     def run(self):
         connection = self._get_connection()
-        print("Connected")
+        logging.info("Connected")
         channel = connection.channel()
 
         channel.queue_declare(queue="maps")

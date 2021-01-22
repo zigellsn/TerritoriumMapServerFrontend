@@ -31,6 +31,10 @@ logger = logging.getLogger("django.request")
 @method_decorator(csrf_exempt, name="dispatch")
 class ReceiverView(LoginRequiredMixin, View):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.logger = logging.getLogger(__name__)
+
     @staticmethod
     def create_job(polygon):
         job = {"job": str(uuid.uuid4()),
@@ -48,12 +52,12 @@ class ReceiverView(LoginRequiredMixin, View):
                 channel.queue_declare(queue="mapnik")
                 channel.basic_publish(exchange="",
                                       routing_key="mapnik",
-                                      body=json.dumps(job))
+                                      body=bytes(json.dumps(job)))
                 connection.close()
                 RenderJob.objects.create_render_job(guid=job["job"], owner=request.user,
                                                     media_type=job["payload"]["polygon"]["mediaType"])
             except pika.exceptions.AMQPConnectionError as e:
-                print(e)
+                logger.error(e)
                 return HttpResponse(status=500)
             return HttpResponse("success")
 

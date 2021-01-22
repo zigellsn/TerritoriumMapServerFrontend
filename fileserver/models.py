@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import logging
 import os
 from datetime import timedelta
 
@@ -24,6 +25,8 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+logger = logging.getLogger("django.custom.smtp")
 
 
 class RenderJobQuerySet(QuerySet):
@@ -73,7 +76,7 @@ def send_mail_receiver(sender, instance, **kwargs):
             fail_silently=True,
             html_message=html_message
         )
-    print("ok")
+    logging.info("ok")
 
 
 class MapResultQuerySet(QuerySet):
