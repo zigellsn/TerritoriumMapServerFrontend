@@ -52,7 +52,7 @@ class ReceiverView(LoginRequiredMixin, View):
                 channel.queue_declare(queue="mapnik")
                 channel.basic_publish(exchange="",
                                       routing_key="mapnik",
-                                      body=bytes(json.dumps(job)))
+                                      body=json.dumps(job))
                 connection.close()
                 RenderJob.objects.create_render_job(guid=job["job"], owner=request.user,
                                                     media_type=job["payload"]["polygon"]["mediaType"])
