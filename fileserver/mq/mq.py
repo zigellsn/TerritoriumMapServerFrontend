@@ -16,7 +16,6 @@ import json
 import logging
 import threading
 import uuid
-from typing import Optional, Callable, Any, Iterable, Mapping
 
 import pika
 from django.conf import settings
@@ -26,8 +25,7 @@ from django.utils import timezone
 
 class AMQPConsuming(threading.Thread):
 
-    def __init__(self, group: None = ..., target: Optional[Callable[..., Any]] = ..., name: Optional[str] = ...,
-                 args: Iterable[Any] = ..., kwargs: Mapping[str, Any] = ..., *, daemon: Optional[bool] = ...) -> None:
+    def __init__(self, group=None, target=None, name=None, args=(), kwargs=None, *, daemon=None):
         super().__init__(group, target, name, args, kwargs, daemon=daemon)
         self.logger = logging.getLogger(__name__)
 
