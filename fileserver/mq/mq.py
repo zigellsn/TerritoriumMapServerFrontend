@@ -36,7 +36,7 @@ class AMQPConsuming(threading.Thread):
         except AttributeError as e:
             logging.error(e)
             return
-        if not ("job" in result and "payload" in result and "filename" in result):
+        if not ("job" in result and "payload" in result):
             return
         try:
             from fileserver.models import RenderJob, MapResult
