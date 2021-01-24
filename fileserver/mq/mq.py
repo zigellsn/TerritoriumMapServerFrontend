@@ -47,7 +47,10 @@ class AMQPConsuming(threading.Thread):
             map_result = MapResult()
             map_result.guid = uuid.uuid4()
             map_result.job = render_job
-            map_result.file.save(result["filename"], ContentFile(bytes(result["payload"]["data"])))
+            if "error" in result and result["error"]:
+                render_job.message = bytes(result["payload"]["data"]).decode("utf-8")
+            else:
+                map_result.file.save(result["filename"], ContentFile(bytes(result["payload"]["data"])))
             map_result.save()
             render_job.save()
         except Exception as e:

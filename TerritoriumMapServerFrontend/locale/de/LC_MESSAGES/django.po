@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-28 20:09+0200\n"
+"POT-Creation-Date: 2021-01-24 15:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\fileserver\models.py:52 .\fileserver\models.py:114
+#: .\fileserver\models.py:54 .\fileserver\models.py:120
 #: .\templates\fileserver\renderjob_detail.html:12
 msgid "GUID"
 msgstr "GUID"
 
-#: .\fileserver\models.py:56 .\templates\fileserver\mapresult_list.html:18
+#: .\fileserver\models.py:58 .\templates\fileserver\mapresult_list.html:18
 #: .\templates\fileserver\renderjob_detail.html:14
 msgid "Media type"
 msgstr "Media type"
 
-#: .\fileserver\models.py:67
+#: .\fileserver\models.py:73
 msgid "Territorium Map Server rendering job finished"
 msgstr "Territorium Map Server Renderjob abgeschlossen"
 
@@ -41,7 +41,6 @@ msgid "To retreive your map data go to"
 msgstr "Klicke auf die folgenden Links, um die Kartendaten herunterzuladen."
 
 #: .\templates\fileserver\job_status_mail.html:17
-#: .\templates\registration\password_reset_email.html:12
 msgid "The Territorium Map Server team"
 msgstr "Das Territorium Map Server team"
 
@@ -61,6 +60,10 @@ msgstr "Job"
 msgid "Create time"
 msgstr "Erstellungsdatum"
 
+#: .\templates\fileserver\mapresult_list.html:29
+msgid "An error has occured. See job log for details."
+msgstr "Ein Fehler ist aufgetreten. Siehe Job-Log für Details."
+
 #: .\templates\fileserver\renderjob_detail.html:13
 msgid "Owner"
 msgstr "Besitzer"
@@ -72,6 +75,10 @@ msgstr "Sendedatum"
 #: .\templates\fileserver\renderjob_detail.html:16
 msgid "Finish time"
 msgstr "Fertigstellungsdatum"
+
+#: .\templates\fileserver\renderjob_detail.html:18
+msgid "Error message"
+msgstr "Fehlermeldung"
 
 #~| msgid "File"
 #~ msgid "Files"

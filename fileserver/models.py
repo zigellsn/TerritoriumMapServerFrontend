@@ -56,6 +56,7 @@ class RenderJob(models.Model):
     send_time = models.DateTimeField(default=timezone.now)
     finish_time = models.DateTimeField(null=True)
     media_type = models.CharField(_('Media type'), default="image/png", max_length=100)
+    message = models.TextField(null=True)
 
     objects = RenderJobManager()
 
@@ -118,7 +119,7 @@ class MapResultManager(models.Manager):
 class MapResult(models.Model):
     guid = models.CharField(_('GUID'), primary_key=True, max_length=36)
     job = models.ForeignKey(RenderJob, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='maps')
+    file = models.FileField(upload_to='maps', blank=True)
     result_time = models.DateTimeField(default=timezone.now)
 
     objects = MapResultManager()

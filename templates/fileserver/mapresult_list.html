@@ -25,11 +25,17 @@
                 <tr class="mdc-data-table__row">
                     <td class="mdc-data-table__cell">
                         <div>
-                            <a href="{% url 'fileserver:download' pk=map_result.guid %}">{{ map_result.filename }}</a>
+                            {% if not map_result.file %}
+                                <a href="{% url 'fileserver:jobdetail' pk=map_result.job.guid %}">{% trans 'An error has occured. See job log for details.' %}</a>
+                            {% else %}
+                                <a href="{% url 'fileserver:download' pk=map_result.guid %}">{{ map_result.filename }}</a>
+                            {% endif %}
                         </div>
                     </td>
                     <td class="mdc-data-table__cell">
-                        <div>{{ map_result.file.size|filesizeformat }}</div>
+                        {% if map_result.file %}
+                            <div>{{ map_result.file.size|filesizeformat }}</div>
+                        {% endif %}
                     </td>
                     <td class="mdc-data-table__cell">
                         <div>{{ map_result.media_type }}</div>

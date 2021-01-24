@@ -14,5 +14,8 @@
     <div>{% trans 'Media type' %}&nbsp;{{ renderjob.media_type }}</div>
     <div>{% trans 'Send time' %}&nbsp;{{ renderjob.send_time }}</div>
     <div>{% trans 'Finish time' %}&nbsp;{{ renderjob.finish_time }}</div>
+    {% if renderjob.error != "" or renderjob.error != null %}
+        <div>{% trans 'Error message' %}&nbsp;{{ renderjob.message }}</div>
+    {% endif %}
     </p>
 {% endblock %}
