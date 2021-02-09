@@ -14,15 +14,12 @@
 
 import io
 import os
-import uuid
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import StreamingHttpResponse, HttpResponse
-from django.utils import timezone
 from django.views import View
-from django.views.generic import ListView, FormView, DetailView
+from django.views.generic import ListView, DetailView
 
-from .forms import UploadFileForm
 from .models import MapResult, RenderJob
 
 
