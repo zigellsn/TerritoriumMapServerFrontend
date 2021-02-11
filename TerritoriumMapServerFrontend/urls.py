@@ -19,14 +19,12 @@ from django.urls import path, include
 
 from .views import redirect_root
 
-urlpatterns = []
+urlpatterns = [path('receiver/', include('receiver.urls'))]
 urlpatterns += i18n_patterns(
     path('', redirect_root),
-    path('receiver/', include('receiver.urls')),
     path('files/', include('fileserver.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    prefix_default_language=False
+    path('accounts/', include('django.contrib.auth.urls'))
 )
 
 if settings.DEBUG:
@@ -36,5 +34,5 @@ if settings.DEBUG:
         pass
     else:
         urlpatterns = [
-            path('__debug__/', include(debug_toolbar.urls)),
-        ] + urlpatterns
+                          path('__debug__/', include(debug_toolbar.urls)),
+                      ] + urlpatterns
