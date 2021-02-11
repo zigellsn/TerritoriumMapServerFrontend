@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-24 15:40+0100\n"
+"POT-Creation-Date: 2021-02-11 12:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\fileserver\models.py:54 .\fileserver\models.py:120
-#: .\templates\fileserver\renderjob_detail.html:12
+#: .\fileserver\models.py:54 .\fileserver\models.py:118
+#: .\templates\fileserver\renderjob_detail.html:14
 msgid "GUID"
 msgstr "GUID"
 
-#: .\fileserver\models.py:58 .\templates\fileserver\mapresult_list.html:18
-#: .\templates\fileserver\renderjob_detail.html:14
-msgid "Media type"
-msgstr "Media type"
+#: .\fileserver\models.py:58 .\templates\fileserver\renderjob_detail.html:22
+msgid "Polygon count"
+msgstr "Anzahl Polygone"
 
 #: .\fileserver\models.py:73
 msgid "Territorium Map Server rendering job finished"
 msgstr "Territorium Map Server Renderjob abgeschlossen"
+
+#: .\fileserver\models.py:120 .\templates\fileserver\mapresult_list.html:18
+msgid "Media type"
+msgstr "Media type"
 
 #: .\templates\fileserver\job_status_mail.html:3
 msgid "Your rendering job has just finished successfully."
@@ -64,19 +67,19 @@ msgstr "Erstellungsdatum"
 msgid "An error has occured. See job log for details."
 msgstr "Ein Fehler ist aufgetreten. Siehe Job-Log für Details."
 
-#: .\templates\fileserver\renderjob_detail.html:13
+#: .\templates\fileserver\renderjob_detail.html:18
 msgid "Owner"
 msgstr "Besitzer"
 
-#: .\templates\fileserver\renderjob_detail.html:15
+#: .\templates\fileserver\renderjob_detail.html:26
 msgid "Send time"
 msgstr "Sendedatum"
 
-#: .\templates\fileserver\renderjob_detail.html:16
+#: .\templates\fileserver\renderjob_detail.html:30
 msgid "Finish time"
 msgstr "Fertigstellungsdatum"
 
-#: .\templates\fileserver\renderjob_detail.html:18
+#: .\templates\fileserver\renderjob_detail.html:34
 msgid "Error message"
 msgstr "Fehlermeldung"
 

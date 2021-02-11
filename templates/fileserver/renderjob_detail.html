@@ -8,14 +8,32 @@
 {% endblock %}
 
 {% block content %}
-    <p>
-    <div>{% trans 'GUID' %}&nbsp;{{ renderjob.guid }}</div>
-    <div>{% trans 'Owner' %}&nbsp;{{ renderjob.owner }}</div>
-    <div>{% trans 'Media type' %}&nbsp;{{ renderjob.media_type }}</div>
-    <div>{% trans 'Send time' %}&nbsp;{{ renderjob.send_time }}</div>
-    <div>{% trans 'Finish time' %}&nbsp;{{ renderjob.finish_time }}</div>
-    {% if renderjob.error != "" or renderjob.error != null %}
-        <div>{% trans 'Error message' %}&nbsp;{{ renderjob.message }}</div>
-    {% endif %}
-    </p>
+    <table class="mdc-data-table__table" aria-label="Files">
+        <tbody class="mdc-data-table__content">
+        <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{% trans 'GUID' %}</td>
+            <td class="mdc-data-table__cell">{{ renderjob.guid }}</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{% trans 'Owner' %}</td>
+            <td class="mdc-data-table__cell">{{ renderjob.owner }}</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{% trans 'Polygon count' %}</td>
+            <td class="mdc-data-table__cell">{{ renderjob.polygon_count }}</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{% trans 'Send time' %}</td>
+            <td class="mdc-data-table__cell">{{ renderjob.send_time }}</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{% trans 'Finish time' %}</td>
+            <td class="mdc-data-table__cell">{{ renderjob.finish_time }}</td>
+        </tr>
+        <tr class="mdc-data-table__row">
+            <td class="mdc-data-table__cell">{% trans 'Error message' %}</td>
+            <td class="mdc-data-table__cell">{{ renderjob.message }}</td>
+        </tr>
+        </tbody>
+    </table>
 {% endblock %}

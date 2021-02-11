@@ -42,17 +42,21 @@ class AMQPConsuming(threading.Thread):
             from fileserver.models import RenderJob, MapResult
             render_job = RenderJob.objects.get(guid=result["job"])
             if render_job.finish_time is not None:
-                return
-            render_job.finish_time = timezone.now()
+                logging.warning(f"Rendering job {render_job.guid} already finished.")
             map_result = MapResult()
             map_result.guid = uuid.uuid4()
             map_result.job = render_job
             if "error" in result and result["error"]:
                 render_job.message = bytes(result["payload"]["data"]).decode("utf-8")
             else:
+                map_result.media_type = result["mediaType"]
                 map_result.file.save(result["filename"], ContentFile(bytes(result["payload"]["data"])))
             map_result.save()
-            render_job.save()
+
+            map_result_count = MapResult.objects.filter(job=render_job).count()
+            if map_result_count == render_job.polygon_count:
+                render_job.finish_time = timezone.now()
+                render_job.save()
         except Exception as e:
             logging.error(e)
 

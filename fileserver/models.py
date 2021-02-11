@@ -46,8 +46,8 @@ class RenderJobManager(models.Manager):
     def by_owner(self, owner, finished=None):
         return self.get_query_set().by_owner(owner, finished)
 
-    def create_render_job(self, guid, owner, media_type="image/png"):
-        return self.create(guid=guid, owner=owner, media_type=media_type)
+    def create_render_job(self, guid, owner, polygon_count=1):
+        return self.create(guid=guid, owner=owner, polygon_count=polygon_count)
 
 
 class RenderJob(models.Model):
@@ -55,7 +55,7 @@ class RenderJob(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     send_time = models.DateTimeField(default=timezone.now)
     finish_time = models.DateTimeField(null=True)
-    media_type = models.CharField(_('Media type'), default="image/png", max_length=100)
+    polygon_count = models.IntegerField(_('Polygon count'), default=1)
     message = models.TextField(null=True)
 
     objects = RenderJobManager()
@@ -96,8 +96,8 @@ class MapResultManager(models.Manager):
     def get_query_set(self):
         return MapResultQuerySet(self.model, using=self._db)
 
-    def create_map_result(self, guid, job, file):
-        return self.create(guid=guid, job=job, file=file)
+    def create_map_result(self, guid, job, file, media_type="image/png"):
+        return self.create(guid=guid, job=job, file=file, media_type=media_type)
 
     def delete_invalid(self):
         return self.get_query_set().invalid().delete()
@@ -107,9 +107,7 @@ class MapResultManager(models.Manager):
             return MapResult.objects.none()
         map_results = self.get_query_set().by_job(job).order_by("-result_time", "file")
         for map_result in map_results:
-            render_job = RenderJob.objects.get(guid=map_result.job_id)
             map_result.filename = os.path.basename(map_result.file.name)
-            map_result.media_type = render_job.media_type
         return map_results
 
     def by_guid(self, guid):
@@ -119,6 +117,7 @@ class MapResultManager(models.Manager):
 class MapResult(models.Model):
     guid = models.CharField(_('GUID'), primary_key=True, max_length=36)
     job = models.ForeignKey(RenderJob, on_delete=models.CASCADE)
+    media_type = models.CharField(_('Media type'), default="image/png", max_length=100)
     file = models.FileField(upload_to='maps', blank=True)
     result_time = models.DateTimeField(default=timezone.now)
 

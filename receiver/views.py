@@ -15,6 +15,7 @@
 import json
 import logging
 import uuid
+from json import JSONDecodeError
 
 import pika
 from django.conf import settings
@@ -117,13 +118,22 @@ class ReceiverView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         request_type = request.META.get("HTTP_X_TERRITORIUM")
         if request_type == "map_rendering":
-            payload = json.loads(request.body)
+            try:
+                payload = json.loads(request.body)
+            except JSONDecodeError:
+                return HttpResponse(status=400, content="Invalid JSON")
             (okay, message) = self.__check_payload__(payload)
             if not okay:
                 return HttpResponse(status=400, content=message)
             job_message = self.__create_job__(payload)
             job = json.loads(job_message)
             try:
+                polygon_count = 1
+                if type(payload["polygon"]) == list and "page" not in payload:
+                    polygon_count = len(payload["polygon"])
+                RenderJob.objects.create_render_job(guid=job["job"], owner=request.user,
+                                                    polygon_count=polygon_count)
+
                 connection = pika.BlockingConnection(pika.URLParameters(settings.RABBITMQ_URL))
                 channel = connection.channel()
                 channel.queue_declare(queue="mapnik")
@@ -131,11 +141,6 @@ class ReceiverView(LoginRequiredMixin, View):
                                       routing_key="mapnik",
                                       body=job_message)
                 connection.close()
-                media_type = job["payload"]["polygon"]["mediaType"]
-                if "page" in job["payload"]["polygon"]:
-                    media_type = job["payload"]["polygon"]["page"]["mediaType"]
-                RenderJob.objects.create_render_job(guid=job["job"], owner=request.user,
-                                                    media_type=media_type)
             except pika.exceptions.AMQPConnectionError as e:
                 logger.error(e)
                 return HttpResponse(status=500)
