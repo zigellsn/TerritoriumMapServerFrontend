@@ -77,7 +77,7 @@ def send_mail_receiver(sender, instance, **kwargs):
             fail_silently=True,
             html_message=html_message
         )
-    logging.info("ok")
+        logging.info(f"Email for job {sender.guid} sent. Send_mail fails silently!")
 
 
 class MapResultQuerySet(QuerySet):

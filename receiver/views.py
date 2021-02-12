@@ -42,9 +42,9 @@ class ReceiverView(LoginRequiredMixin, View):
     def __check_page__(page):
         if "mediaType" not in page:
             return False, f"No page media type given."
-        if page["mediaType"] != "image/xml+svg" and page["mediaType"] != "application/pdf" \
+        if page["mediaType"] != "image/svg+xml" and page["mediaType"] != "application/pdf" \
                 and page != "application/xhtml+xml":
-            return False, f"Page media type has to be application/pdf, image/xml+svg or " \
+            return False, f"Page media type has to be application/pdf, image/svg+xml or " \
                           f"application/xhtml+xml. "
         if page["mediaType"] != "application/pdf":
             return True, ""
@@ -74,8 +74,8 @@ class ReceiverView(LoginRequiredMixin, View):
     @staticmethod
     def __check_polygon__(number, polygon):
         if "mediaType" not in polygon or (
-                polygon["mediaType"] != "image/xml+svg" and polygon["mediaType"] != "image/png"):
-            return False, f"Polygon {number}: Media type has to be image/png or image/xml+svg."
+                polygon["mediaType"] != "image/svg+xml" and polygon["mediaType"] != "image/png"):
+            return False, f"Polygon {number}: Media type has to be image/png or image/svg+xml."
         return True, ""
 
     def __check_payload__(self, payload):
