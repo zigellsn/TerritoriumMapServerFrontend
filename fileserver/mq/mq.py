@@ -16,6 +16,7 @@ import json
 import logging
 import threading
 import uuid
+from pathlib import Path
 
 import pika
 from django.conf import settings
@@ -45,7 +46,7 @@ class AMQPConsuming(threading.Thread):
                 logging.warning(f"Rendering job {render_job.guid} already finished.")
                 return
             if "error" in result and result["error"]:
-                render_job.message = bytes(result["payload"]["data"]).decode("utf-8")
+                render_job.message = result["payload"]
                 render_job.finish_time = timezone.now()
                 render_job.save()
                 return
@@ -55,8 +56,10 @@ class AMQPConsuming(threading.Thread):
                 map_result.job = render_job
 
                 map_result.media_type = result["mediaType"]
-                map_result.file.save(result["filename"], ContentFile(bytes(result["payload"]["data"])))
+                contents = Path(f"{settings.EXCHANGE_DIR}{result['payload']}").read_bytes()
+                map_result.file.save(result["filename"], ContentFile(contents))
                 map_result.save()
+                Path(f"{settings.EXCHANGE_DIR}{result['payload']}").unlink(missing_ok=True)
             logging.info("File received")
             map_result_count = MapResult.objects.filter(job=render_job).count()
             if map_result_count == render_job.polygon_count:
