@@ -16,9 +16,13 @@
 
 const path = require('path');
 
+let runMode = process.env.RUN_MODE;
+if (runMode === undefined || runMode === '') {
+    runMode = 'development';
+}
+
 module.exports = {
-    mode: 'development',
-    // mode: 'production',
+    mode: runMode,
     entry: ['./mdc/mdc.scss', './mdc/init_mdc.js'],
     output: {
         filename: 'js/bundle.js',
