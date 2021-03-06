@@ -23,7 +23,7 @@ if (runMode === undefined || runMode === '') {
 
 module.exports = {
     mode: runMode,
-    entry: ['./mdc/mdc.scss', './mdc/init_mdc.js'],
+    entry: ['./mdc/mdc.scss', './mdc/init_mdc.ts'],
     output: {
         filename: 'js/bundle.js',
         path: path.resolve(__dirname, 'TerritoriumMapServerFrontend/static')
@@ -31,7 +31,14 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.scss$/,
+                test: /\.tsx?$/,
+                use: [{
+                    loader: 'ts-loader',
+                }],
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.s?css$/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -77,6 +84,10 @@ module.exports = {
                     presets: ['@babel/preset-env'],
                 },
             }
+
         ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     },
 };

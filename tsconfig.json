@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es5",
+    "alwaysStrict": true
+  },
+  "include": [
+    "./mdc/init_mdc.ts",
+    "./**/static/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
