@@ -5,7 +5,8 @@ ENV RUN_MODE=production
 COPY . .
 
 RUN npm install && \
-    npm run build && \
+    npm run build --production && \
+    npm run postcss && \
     rm -rf node_modules
 
 FROM tms/python-base:slim

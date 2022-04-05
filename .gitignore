@@ -393,6 +393,9 @@ typings/
 tmp/
 temp/
 
+mdc.css
+init_mdc.js
+
 bundle.css
 bundle.js
 #

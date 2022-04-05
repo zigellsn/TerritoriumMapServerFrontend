@@ -1,4 +1,4 @@
-django==4.0.2
+django==4.0.3
 psycopg2-binary==2.9.3
 pika==1.2.0
 pika-stubs==0.1.3

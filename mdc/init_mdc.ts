@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple';
 import {MDCTextField} from '@material/textfield';
 import {MDCDataTable} from '@material/data-table';
 import {MDCTopAppBar} from '@material/top-app-bar';

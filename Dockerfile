@@ -5,7 +5,8 @@ ENV RUN_MODE=development
 COPY . .
 
 RUN npm install && \
-    npm run build
+    npm run build && \
+    rm -rf node_modules
 
 FROM tms/python-base:slim
 
