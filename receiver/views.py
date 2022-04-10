@@ -25,7 +25,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
-from TerritoriumMapServerFrontend.settings.common import MAX_POLYGONS
+from TerritoriumMapServerFrontend.settings import MAX_POLYGONS
 from fileserver.models import RenderJob
 
 logger = logging.getLogger("django.request")

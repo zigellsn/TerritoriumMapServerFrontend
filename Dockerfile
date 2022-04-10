@@ -12,7 +12,6 @@ FROM tms/python-base:slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE=TerritoriumMapServerFrontend.settings.dev
 
 ENV DEPENDENCIES="gcc \
     libffi-dev \
