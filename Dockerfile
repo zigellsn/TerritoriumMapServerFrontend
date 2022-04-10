@@ -1,4 +1,4 @@
-FROM node:15-slim AS build
+FROM node:17-slim AS build
 
 ENV RUN_MODE=development
 
