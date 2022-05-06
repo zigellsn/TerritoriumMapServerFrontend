@@ -10,21 +10,21 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^10.4.4",
+    "autoprefixer": "^10.4.7",
     "cssnano": "^5.1.7",
     "laravel-mix": "^6.0.43",
-    "postcss": "^8.4.12",
+    "postcss": "^8.4.13",
     "postcss-cli": "^9.1.0",
     "resolve-url-loader": "^5.0.0",
     "sass-loader": "^12.6.0",
-    "ts-loader": "^9.2.8",
-    "typescript": "^4.6.3"
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "htmx.org": "^1.7.0",
     "hyperscript.org": "^0.9.5",
-    "luxon": "^2.3.1",
-    "material-components-web": "^13.0.0",
+    "luxon": "^2.3.2",
+    "material-components-web": "^14.0.0",
     "normalize.css": "^8.0.1"
   }
 }

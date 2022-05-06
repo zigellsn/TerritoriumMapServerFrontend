@@ -57,7 +57,7 @@ RABBITMQ_URL = env.str("RABBITMQ_URL", default="amqp://tms:tms@localhost:5672/%2
 
 EXCHANGE_DIR = env.str("EXCHANGE_DIR", default="/input/")
 
-MAX_POLYGONS = env.str("MAX_POLYGONS", default=9)
+MAX_POLYGONS = env.int("MAX_POLYGONS", default=9)
 
 # Application definition
 
