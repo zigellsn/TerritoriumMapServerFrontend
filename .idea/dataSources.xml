@@ -10,7 +10,7 @@
       <jdbc-url>jdbc:sqlite:C:\Users\Simon\PycharmProjects\TerritoriumMapServerFrontend\db.sqlite3</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="db" uuid="cf2674bb-8a79-4457-971a-304113b12c72">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>75cc9ebb-e164-42d9-b635-b9e03ae8f9f0</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Simon\WebstormProjects\TerritoriumMapRenderer\frontend\db.sqlite3</jdbc-url>
