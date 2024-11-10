@@ -1,4 +1,4 @@
-FROM node:22-slim AS build
+FROM docker.io/node:22-slim AS build
 
 ENV RUN_MODE=development
 
@@ -8,7 +8,7 @@ RUN npm install && \
     npm run build && \
     rm -rf node_modules
 
-FROM tms/python-base:slim
+FROM localhost/tms/python-base:slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
