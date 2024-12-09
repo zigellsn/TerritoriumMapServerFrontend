@@ -20,14 +20,14 @@ mix.disableNotifications();
 
 mix.ts('./mdc/init_mdc.ts', './mdc/init_mdc.js');
 
-let src = ['./node_modules/htmx.org/dist/htmx.js',
-    './node_modules/htmx.org/dist/ext/ws.js',
-    './node_modules/hyperscript.org/dist/_hyperscript_w9y.min.js',
+let src = ['./node_modules/htmx.org/dist/htmx.min.js',
+    './node_modules/htmx-ext-ws/ws.js',
     './node_modules/luxon/build/global/luxon.min.js',
-    './mdc/init_mdc.js']
+    './mdc/init_mdc.js',
+    './node_modules/hyperscript.org/dist/_hyperscript.min.js']
 
 if (process.env.NODE_ENV === 'development')
-    src.push('./node_modules/hyperscript.org/dist/hdb.min.js');
+    src.push('./node_modules/hyperscript.org/src/hdb.js');
 
 mix.combine(src,
     './TerritoriumMapServerFrontend/static/js/bundle.js');

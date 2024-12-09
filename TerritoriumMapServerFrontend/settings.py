@@ -62,7 +62,6 @@ MAX_POLYGONS = env.int("MAX_POLYGONS", default=9)
 # Application definition
 
 INSTALLED_APPS = [
-    'receiver',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -37,7 +37,7 @@
 
 @include textfield.core-styles;
 
-@import "node_modules/normalize.css/normalize";
+@import "../node_modules/normalize.css/normalize";
 
 .root {
   margin-left: 24px;

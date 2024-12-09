@@ -21,24 +21,24 @@ import {MDCTopAppBar} from '@material/top-app-bar';
 import {MDCMenu} from '@material/menu';
 
 const buttonElements = [].slice.call(document.querySelectorAll('.mdc-button'));
-buttonElements.forEach((buttonEl) => {
+buttonElements.forEach((buttonEl: Element) => {
     new MDCRipple(buttonEl);
 });
 const iconButtonElements = [].slice.call(document.querySelectorAll('.mdc-icon-button'));
-iconButtonElements.forEach((iconButtonEl) => {
+iconButtonElements.forEach((iconButtonEl: Element) => {
     const iconButtonRipple = new MDCRipple(iconButtonEl);
     iconButtonRipple.unbounded = true;
 });
 const textFieldElements = [].slice.call(document.querySelectorAll('.mdc-text-field'));
-textFieldElements.forEach((textFieldEl) => {
+textFieldElements.forEach((textFieldEl: Element) => {
     new MDCTextField(textFieldEl);
 });
 const dataTableElements = [].slice.call(document.querySelectorAll('.mdc-data-table'));
-dataTableElements.forEach((dataTableEl) => {
+dataTableElements.forEach((dataTableEl: Element) => {
     new MDCDataTable(dataTableEl);
 });
 const topAppBarElements = [].slice.call(document.querySelectorAll('.mdc-top-app-bar'));
-topAppBarElements.forEach((appBarEl) => {
+topAppBarElements.forEach((appBarEl: Element) => {
     new MDCTopAppBar(appBarEl);
 });
 

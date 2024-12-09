@@ -18,15 +18,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from .api import api
 from .views import redirect_root
-
-urlpatterns = [path('receiver/', include('receiver.urls'))]
-urlpatterns += i18n_patterns(
+urlpatterns = i18n_patterns(
     path('', redirect_root),
     path('files/', include('fileserver.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
 )
+urlpatterns += [path("api/", api.urls)]
 
 if settings.DEBUG:
     try:
