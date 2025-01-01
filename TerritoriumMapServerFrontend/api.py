@@ -1,4 +1,4 @@
-#  Copyright 2019-2024 Simon Zigelli
+#  Copyright 2019-2025 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@ import logging
 import uuid
 from json import JSONDecodeError
 
-import pika
-from django.http import HttpResponse
-from django.utils.decorators import method_decorator
+import aio_pika
+from asgiref.sync import sync_to_async
+from django.http import HttpResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from ninja import NinjaAPI
+from ninja.signature import is_async
 
 from TerritoriumMapServerFrontend import settings
 from TerritoriumMapServerFrontend.settings import MAX_POLYGONS
@@ -31,8 +32,19 @@ api = NinjaAPI(csrf=True)
 logger = logging.getLogger("django.request")
 
 
-@api.post("/receiver")
-@method_decorator(csrf_exempt, name="dispatch")
+async def async_auth(request: HttpRequest):
+    if hasattr(request, "auser") and is_async(request.auser):
+        current_user = await request.auser()
+    else:
+        current_user = request.user
+
+    if current_user.is_authenticated:
+        return current_user
+    return None
+
+
+@api.post("/receiver/", auth=async_auth)
+@csrf_exempt
 async def receiver(request):
     request_type = request.META.get("HTTP_X_TERRITORIUM")
     if request_type == "map_rendering":
@@ -49,27 +61,20 @@ async def receiver(request):
             polygon_count = 1
             if type(payload["polygon"]) == list and "page" not in payload:
                 polygon_count = len(payload["polygon"])
-            RenderJob.objects.create_render_job(guid=job["job"], owner=request.user,
-                                                polygon_count=polygon_count)
+            await sync_to_async(RenderJob.objects.create_render_job)(guid=job["job"], owner=request.user,
+                                                                     polygon_count=polygon_count)
 
-            connection = pika.BlockingConnection(pika.URLParameters(settings.RABBITMQ_URL))
-            channel = connection.channel()
-            channel.queue_declare(queue="mapnik")
-            channel.basic_publish(exchange="",
-                                  routing_key="mapnik",
-                                  body=job_message)
-            connection.close()
-        except pika.exceptions.AMQPConnectionError as e:
+            connection = await aio_pika.connect_robust(settings.RABBITMQ_URL)
+            channel = await connection.channel()
+            queue = await channel.declare_queue(name="mapnik", durable=True)
+            await channel.default_exchange.publish(aio_pika.Message(body=job_message), routing_key=queue.name)
+            await connection.close()
+        except aio_pika.exceptions.AMQPConnectionError as e:
             logger.error(e)
             return HttpResponse(status=500)
         return HttpResponse(status=200)
 
     return HttpResponse(status=204)
-
-
-def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs)
-    self.logger = logging.getLogger(__name__)
 
 
 def __check_page__(page):
@@ -112,7 +117,7 @@ def __check_polygon__(number, polygon):
     return True, ""
 
 
-def __check_payload__(self, payload):
+def __check_payload__(payload):
     polygon_count = list(payload.keys()).count("polygon")
     if polygon_count != 1:
         return False, "Exactly one polygon definition is required."
@@ -126,18 +131,18 @@ def __check_payload__(self, payload):
         i = 0
         for polygon in payload["polygon"]:
             i = i + 1
-            (okay, message) = self.__check_polygon__(i, polygon)
+            (okay, message) = __check_polygon__(i, polygon)
             if not okay:
                 return okay, message
     else:
-        (okay, message) = self.__check_polygon__(1, payload["polygon"])
+        (okay, message) = __check_polygon__(1, payload["polygon"])
 
     if not okay:
         return okay, message
 
     page_count = list(payload.keys()).count("page")
     if page_count == 1:
-        return self.__check_page__(payload["page"])
+        return __check_page__(payload["page"])
     elif page_count > 1:
         return False, "Only one or zero page definitions are allowed."
     else:

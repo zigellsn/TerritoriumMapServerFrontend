@@ -1,4 +1,4 @@
-#  Copyright 2019-2023 Simon Zigelli
+#  Copyright 2019-2025 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -11,44 +11,42 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
 import json
 import logging
-import threading
 import uuid
 from pathlib import Path
 
-import pika
-from django.conf import settings
+import aio_pika
+from aio_pika.abc import AbstractIncomingMessage
+from channels.consumer import AsyncConsumer
+from channels.db import database_sync_to_async
 from django.core.files.base import ContentFile
 from django.utils import timezone
 
+from TerritoriumMapServerFrontend import settings
+from fileserver.models import RenderJob, MapResult
 
-class AMQPConsuming(threading.Thread):
 
-    def __init__(self, group=None, target=None, name=None, args=(), kwargs=None, *, daemon=None):
-        super().__init__(group, target, name, args, kwargs, daemon=daemon)
-        self.logger = logging.getLogger(__name__)
+class MqConsumer(AsyncConsumer):
 
     @staticmethod
-    def callback(ch, method, properties, body):
+    async def callback(message: AbstractIncomingMessage):
         try:
-            result = json.loads(body)
+            result = json.loads(message.body)
         except AttributeError as e:
             logging.error(e)
             return
         if not ("job" in result and "payload" in result):
             return
         try:
-            from fileserver.models import RenderJob, MapResult
-            render_job = RenderJob.objects.get(guid=result["job"])
+            render_job = await database_sync_to_async(RenderJob.objects.get)(guid=result["job"])
             if render_job.finish_time is not None:
                 logging.warning(f"Rendering job {render_job.guid} already finished.")
                 return
             if "error" in result and result["error"]:
                 render_job.message = result["payload"]
                 render_job.finish_time = timezone.now()
-                render_job.save()
+                await database_sync_to_async(render_job.save)()
                 return
             else:
                 map_result = MapResult()
@@ -56,32 +54,24 @@ class AMQPConsuming(threading.Thread):
                 map_result.job = render_job
 
                 map_result.media_type = result["mediaType"]
+                print(f"{settings.EXCHANGE_DIR}")
                 contents = Path(f"{settings.EXCHANGE_DIR}{result['payload']}").read_bytes()
-                map_result.file.save(result["filename"], ContentFile(contents))
-                map_result.save()
+                await database_sync_to_async(map_result.file.save)(result["filename"], ContentFile(contents))
+                await database_sync_to_async(map_result.save)()
                 Path(f"{settings.EXCHANGE_DIR}{result['payload']}").unlink(missing_ok=True)
             logging.info("File received")
-            map_result_count = MapResult.objects.filter(job=render_job).count()
+            map_result_count = await database_sync_to_async(MapResult.objects.filter(job=render_job).count)()
             if map_result_count == render_job.polygon_count:
                 render_job.finish_time = timezone.now()
-                render_job.save()
+                await database_sync_to_async(render_job.save)()
                 logging.info(f"Job {render_job.guid} finished.")
 
         except Exception as e:
             logging.error(e)
 
-    @staticmethod
-    def _get_connection():
-        connection = pika.BlockingConnection(pika.URLParameters(settings.RABBITMQ_URL))
-        return connection
-
-    def run(self):
-        connection = self._get_connection()
-        logging.info("Connected")
-        channel = connection.channel()
-
-        channel.queue_declare(queue="maps")
-        channel.basic_qos(prefetch_count=1)
-        channel.basic_consume(on_message_callback=self.callback, queue="maps", auto_ack=True)
-
-        channel.start_consuming()
+    async def mq_listen(self, message):
+        connection = await aio_pika.connect_robust(settings.RABBITMQ_URL)
+        channel = await connection.channel()
+        await channel.set_qos(prefetch_count=1)
+        queue = await channel.declare_queue(name="maps", durable=True)
+        await queue.consume(callback=self.callback, no_ack=True)

@@ -34,5 +34,6 @@ echo "RabbitMQ started"
 python manage.py migrate --no-input
 python manage.py compilemessages --ignore venv
 python manage.py collectstatic --no-input --clear
+python manage.py runworker mq
 
 exec "$@"

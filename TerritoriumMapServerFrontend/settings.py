@@ -1,4 +1,4 @@
-#  Copyright 2019-2023 Simon Zigelli
+#  Copyright 2019-2025 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.forms',
     'fileserver.apps.FileserverConfig',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -116,8 +117,19 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'TerritoriumMapServerFrontend.wsgi.application'
 
+ASGI_APPLICATION = 'TerritoriumMapServerFrontend.asgi.application'
+
 DATABASES = {
     "default": env.db_url(default="sqlite:///db.sqlite3")
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [env.str("REDIS_URL", default="redis://localhost:6379/0")],
+        },
+    },
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -165,7 +177,7 @@ STATICFILES_DIRS = [("TerritoriumMapServerFrontend", str(PROJECT_PACKAGE.joinpat
 MEDIA_URL = "/files/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "files/")
 
-if DEBUG:
+if SHOW_DEBUG_TOOLBAR and "test" not in sys.argv:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = env.str("SECRET_KEY", "django-insecure-qhmmb46a$-j_#%yt0@1enx=mxpercrdbu!sc4^x=a1n_+a!^y5")
     SESSION_COOKIE_SECURE = False
@@ -179,14 +191,14 @@ if DEBUG:
     except ImportError:
         pass
     else:
-        INSTALLED_APPS.append("debug_toolbar")
+        INSTALLED_APPS += ["debug_toolbar"]
         INTERNAL_IPS = ["127.0.0.1"]
-        MIDDLEWARE.insert(
-            MIDDLEWARE.index("django.middleware.common.CommonMiddleware") + 1,
-            "debug_toolbar.middleware.DebugToolbarMiddleware"
-        )
+        MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+        DEBUG_TOOLBAR_CONFIG = {"ROOT_TAG_EXTRA_ATTRS": "data-turbo-permanent hx-preserve"}
 else:
     SECRET_KEY = env.str("SECRET_KEY")
 
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
     SESSION_COOKIE_AGE = 43200
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

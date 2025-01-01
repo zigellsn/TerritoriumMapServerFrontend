@@ -21,9 +21,9 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "htmx.org": "^2.0.3",
+    "htmx.org": "^2.0.4",
     "hyperscript.org": "^0.9.13",
-    "htmx-ext-ws": "^2.0.1",
+    "htmx-ext-ws": "^2.0.2",
     "luxon": "^3.5.0",
     "material-components-web": "^14.0.0",
     "normalize.css": "^8.0.1"

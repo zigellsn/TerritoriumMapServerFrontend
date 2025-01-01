@@ -9,14 +9,18 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Simon\PycharmProjects\TerritoriumMapServerFrontend\db.sqlite3</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="db" uuid="cf2674bb-8a79-4457-971a-304113b12c72">
-      <driver-ref>4aab2e11-a052-4a6a-98e9-e0a94cdb1c38</driver-ref>
+    <data-source source="LOCAL" name="db" uuid="0f4d9e36-fbd3-44a6-bd9a-c6ec4ac71686">
+      <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Simon\WebstormProjects\TerritoriumMapRenderer\frontend\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\szige\Documents\source\WebstormProjects\TerritoriumMapRenderer\frontend\db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/license.txt</url>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.45.1/org/xerial/sqlite-jdbc/3.45.1.0/sqlite-jdbc-3.45.1.0.jar</url>
+        </library>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.45.1/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar</url>
         </library>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/sqlite-jdbc-3.25.1.jar</url>

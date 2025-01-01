@@ -1,4 +1,4 @@
-#  Copyright 2019-2023 Simon Zigelli
+#  Copyright 2019-2025 Simon Zigelli
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -11,16 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.apps import AppConfig
-
-from .mq.mq import AMQPConsuming
 
 
 class FileserverConfig(AppConfig):
     name = 'fileserver'
 
     def ready(self):
-        consumer = AMQPConsuming()
-        consumer.daemon = True
-        consumer.start()
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.send)("mq", {"type": "mq.listen"})
