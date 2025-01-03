@@ -9,10 +9,13 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/
 
 import os
 
+import django
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 from django.core.asgi import get_asgi_application
 from django.urls import re_path
+
+django.setup()
 
 from fileserver import consumers
 

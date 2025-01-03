@@ -16,23 +16,20 @@
 
 let mix = require('laravel-mix');
 
-mix.disableNotifications();
-
-mix.ts('./mdc/init_mdc.ts', './mdc/init_mdc.js');
+mix.disableNotifications()
+    .setPublicPath('./TerritoriumMapServerFrontend/static/')
+    .ts('./mdc/init_mdc.ts', 'js/bundle.js');
 
 let src = ['./node_modules/htmx.org/dist/htmx.min.js',
     './node_modules/htmx-ext-ws/ws.js',
     './node_modules/luxon/build/global/luxon.min.js',
-    './mdc/init_mdc.js',
-    './node_modules/hyperscript.org/dist/_hyperscript.min.js']
+    './TerritoriumMapServerFrontend/static/js/bundle.js',
+    './node_modules/hyperscript.org/dist/_hyperscript.min.js'];
 
 if (process.env.NODE_ENV === 'development')
     src.push('./node_modules/hyperscript.org/src/hdb.js');
 
-mix.combine(src,
-    './TerritoriumMapServerFrontend/static/js/bundle.js');
-
-mix.sass('./mdc/mdc.scss', './mdc/mdc.css');
-
-mix.combine(['./mdc/mdc.css', './node_modules/normalize.css/normalize.css'],
-    './TerritoriumMapServerFrontend/static/css/bundle.css');
+mix.combine(src, './TerritoriumMapServerFrontend/static/js/bundle.js')
+    .sass('./mdc/mdc.scss', 'css/bundle.css')
+    .combine(['./TerritoriumMapServerFrontend/static/css/bundle.css', './node_modules/normalize.css/normalize.css'],
+        'css/bundle.css');
