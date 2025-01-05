@@ -128,7 +128,7 @@ def __check_page__(page):
 
 
 def __check_polygon__(number, polygon):
-    if "mediaType" not in polygon or polygon["mediaType"] not in CONTAINER_MEDIA_TYPES:
+    if "mediaType" not in polygon or polygon["mediaType"] not in CONTENT_MEDIA_TYPES:
         return False, f"Polygon {number}: Media type has to be image/png or image/svg+xml."
     return True, ""
 
