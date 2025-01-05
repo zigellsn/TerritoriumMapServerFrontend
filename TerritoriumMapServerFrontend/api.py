@@ -101,7 +101,7 @@ async def fonts(request):
 @csrf_exempt
 async def constants(request):
     request_type = request.META.get("HTTP_X_TERRITORIUM")
-    if request_type == "constants":
+    if request_type != "constants":
         return HttpResponse(status=204)
     return JsonResponse({"constants": {
         "media_type": {"container": CONTAINER_MEDIA_TYPES, "content": CONTENT_MEDIA_TYPES}, "page_size": PAGE_SIZES,
