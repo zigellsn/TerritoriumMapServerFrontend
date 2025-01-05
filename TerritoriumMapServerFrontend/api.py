@@ -13,18 +13,20 @@
 #  limitations under the License.
 import json
 import logging
+import os
 import uuid
 from json import JSONDecodeError
 
 import aio_pika
 from asgiref.sync import sync_to_async
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from ninja import NinjaAPI
 from ninja.signature import is_async
 
 from TerritoriumMapServerFrontend import settings
-from TerritoriumMapServerFrontend.settings import MAX_POLYGONS
+from TerritoriumMapServerFrontend.settings import MAX_POLYGONS, PAGE_SIZES, ORIENTATIONS, CONTAINER_MEDIA_TYPES, \
+    CONTENT_MEDIA_TYPES, RENDER_FONT_DIR
 from fileserver.models import RenderJob
 
 api = NinjaAPI(csrf=True)
@@ -77,42 +79,56 @@ async def receiver(request):
     return HttpResponse(status=204)
 
 
+@api.get("/fonts/", auth=async_auth)
+@csrf_exempt
+async def fonts(request):
+    request_type = request.META.get("HTTP_X_TERRITORIUM")
+    if request_type != "fonts":
+        return HttpResponse(status=204)
+    font_list = []
+    try:
+        path = os.path.abspath(RENDER_FONT_DIR)
+        for f in os.listdir(path):
+            if os.path.isfile(f"{path}/{f}") and (
+                    f.endswith("ttf") or f.endswith("woff") or f.endswith("woff2") or f.endswith("otf")):
+                font_list.append(f)
+    except OSError:
+        pass
+    return JsonResponse({"fonts": font_list}, status=200)
+
+
+@api.get("/constants/", auth=async_auth)
+@csrf_exempt
+async def constants(request):
+    request_type = request.META.get("HTTP_X_TERRITORIUM")
+    if request_type == "constants":
+        return HttpResponse(status=204)
+    return JsonResponse({"constants": {
+        "media_type": {"container": CONTAINER_MEDIA_TYPES, "content": CONTENT_MEDIA_TYPES}, "page_size": PAGE_SIZES,
+        "orientation": ORIENTATIONS}}, status=200)
+
+
 def __check_page__(page):
     if "mediaType" not in page:
         return False, f"No page media type given."
-    if page["mediaType"] != "image/svg+xml" and page["mediaType"] != "application/pdf" \
-            and page != "application/xhtml+xml":
+    if page["mediaType"] not in CONTAINER_MEDIA_TYPES:
         return False, f"Page media type has to be application/pdf, image/svg+xml or " \
-                      f"application/xhtml+xml. "
+                      f"application/xhtml+xml."
     if page["mediaType"] != "application/pdf":
         return True, ""
     pagesize = None
     if "pageSize" in page:
         pagesize = page["pageSize"]
-    if pagesize is not None and pagesize != "4A0" and pagesize != "2A0" and pagesize != "A0" and pagesize != "A1" \
-            and pagesize != "A2" and pagesize != "A3" and pagesize != "A4" and pagesize != "A5" \
-            and pagesize != "A6" and pagesize != "A7" and pagesize != "A8" and pagesize != "A9" \
-            and pagesize != "A10" and pagesize != "B0" and pagesize != "B1" and pagesize != "B2" \
-            and pagesize != "B3" and pagesize != "B4" and pagesize != "B5" and pagesize != "B6" \
-            and pagesize != "B7" and pagesize != "B8" and pagesize != "B9" and pagesize != "B10" \
-            and pagesize != "C0" and pagesize != "C1" and pagesize != "C2" and pagesize != "C3" \
-            and pagesize != "C4" and pagesize != "C5" and pagesize != "C6" and pagesize != "C7" \
-            and pagesize != "C8" and pagesize != "C9" and pagesize != "C10" \
-            and pagesize != "RA0" and pagesize != "RA1" and pagesize != "RA2" and pagesize != "RA3" \
-            and pagesize != "RA4" and pagesize != "SRA0" and pagesize != "SRA1" and pagesize != "SRA2" \
-            and pagesize != "SRA3" and pagesize != "SRA4" \
-            and pagesize != "EXECUTIVE" and pagesize != "FOLIO" and pagesize != "LEGAL" and pagesize != "LETTER" \
-            and pagesize != "TABLOID":
+    if pagesize is not None and pagesize not in PAGE_SIZES:
         return False, f"Unknown page size '{pagesize}'."
     orientation = page["orientation"]
-    if orientation is not None and orientation != "landscape" and orientation != "portrait":
+    if orientation is not None and orientation not in ORIENTATIONS:
         return False, f"Unknown page orientation '{orientation}'."
     return True, ""
 
 
 def __check_polygon__(number, polygon):
-    if "mediaType" not in polygon or (
-            polygon["mediaType"] != "image/svg+xml" and polygon["mediaType"] != "image/png"):
+    if "mediaType" not in polygon or polygon["mediaType"] not in CONTAINER_MEDIA_TYPES:
         return False, f"Polygon {number}: Media type has to be image/png or image/svg+xml."
     return True, ""
 
@@ -152,4 +168,4 @@ def __check_payload__(payload):
 def __create_job__(payload):
     job = {"job": str(uuid.uuid4()),
            "payload": payload}
-    return bytes(json.dumps(job).encode('utf-8'))
+    return bytes(json.dumps(job).encode("utf-8"))
